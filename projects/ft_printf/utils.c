@@ -22,8 +22,25 @@ static void handle_zero_precision(char **str, unsigned long value, t_flags flags
 
 static void handle_hex(char **str, char **prefix, int c, t_flags flags)
 {
-	unsigned long value = ft_atoi_base(*str, "0123456789abcdef");
-    handle_zero_precision(str, value, flags);
+    unsigned long value = 0;
+    int is_hex = 1;
+    int i = -1;
+
+	printf("string0:[%s]\n", *str);
+    // Check if the input string is in hexadecimal format
+    while ((*str)[++i] != '\0') {
+        if (!ft_strchr("0123456789abcdefABCDEF", (*str)[i])) {
+            is_hex = 0;
+            break;
+        }
+    }
+
+    // Handle zero precision
+    if (!is_hex) {
+        value = ft_atoi_base(*str, "0123456789abcdef");
+        handle_zero_precision(str, value, flags);
+    }
+
     if (flags.hash && **str != '0' && **str != '\0')
     {
         *prefix = "0x";
@@ -36,8 +53,15 @@ static void handle_hex(char **str, char **prefix, int c, t_flags flags)
         if (len < flags.precision)
             *str = ft_strpad(*str, '0', flags.precision - len, 0);
     }
+
+	printf("string1:[%s]\n", *str);
+
     if (flags.width > 0)
         handle_flag_width(str, *prefix, flags);
+    else
+		ft_strjoin((const char *)(prefix), (const char *)(*str));
+	printf("string2:[%s]\n", *str);
+    
 }
 
 static int handle_pointer_width(char *full_str, t_flags flags)
@@ -110,7 +134,7 @@ static int handle_hex_and_pointer(va_list ap, int c, t_flags flags)
     unsigned int value = va_arg(ap, unsigned int);
     str = ft_utoa_base(value, 16, base, flags);
     handle_hex(&str, &prefix, c, flags);
-    count = ft_putstr(prefix) + ft_putstr(str);
+    count = ft_putstr(str);
     free(str);
     return (count);
 }

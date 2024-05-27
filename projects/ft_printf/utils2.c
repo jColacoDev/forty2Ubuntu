@@ -39,7 +39,8 @@ void	handle_flag_width(char **str, char *prefix, t_flags flags)
 	char	pad_char;
 	int		len;
 
-	len = ft_strlen(prefix) + ft_strlen(*str);
+	ft_strjoin((const char *)(prefix), (const char *)(*str));
+	len = ft_strlen(*str);
 	pad_char = ' ';
 	if (flags.zero && !flags.minus && !flags.dot)
 		pad_char = '0';
@@ -65,6 +66,8 @@ void	handle_num_flags(char **str, char *prefix, t_flags flags)
 				*str = ft_strpad(*str, '0', flags.precision - len, 0);
 		}
 	}
+
 	if (flags.width > 0)
 		handle_flag_width(str, prefix, flags);
+
 }

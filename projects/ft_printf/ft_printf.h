@@ -46,6 +46,7 @@ void	*ft_memset(void *s, int c, size_t n);
 unsigned long ft_strtoul_base(const char *str, const char *base);
 int ft_isspace(int c);
 int ft_atoi_base(const char *str, const char *base);
+char *ft_strchr(const char *s, int c);
 
 int		handle_number_conversion(va_list ap, int s, t_flags flags);
 int		handle_special_cases(va_list ap, int s, t_flags flags);

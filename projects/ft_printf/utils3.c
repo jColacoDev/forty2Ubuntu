@@ -44,7 +44,7 @@ static int	handle_string(va_list ap, t_flags flags)
 	{
 		str = ft_strdup(str);
 	}
-	handle_flag_width(&str, "", flags);
+	handle_flag_width(&str, flags);
 	count = ft_putstr(str);
 	free(str);
 	return (count);

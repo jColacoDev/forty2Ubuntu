@@ -25,8 +25,9 @@ static void handle_hex(char **str, char **prefix, int c, t_flags flags)
     unsigned long value = 0;
     int is_hex = 1;
     int i = -1;
+	char	*new_str;
 
-	printf("string0:[%s]\n", *str);
+	// printf("string0:[%s]\n", *str);
     // Check if the input string is in hexadecimal format
     while ((*str)[++i] != '\0') {
         if (!ft_strchr("0123456789abcdefABCDEF", (*str)[i])) {
@@ -54,14 +55,18 @@ static void handle_hex(char **str, char **prefix, int c, t_flags flags)
             *str = ft_strpad(*str, '0', flags.precision - len, 0);
     }
 
-	printf("string1:[%s]\n", *str);
+	// printf("prefix:[%s]\n", *prefix);
+	// printf("string1:[%s]\n", *str);
 
-    if (flags.width > 0)
-        handle_flag_width(str, *prefix, flags);
-    else
-		ft_strjoin((const char *)(prefix), (const char *)(*str));
-	printf("string2:[%s]\n", *str);
+    new_str = ft_strjoin((const char *)(*prefix), (const char *)(*str));
+    free(*str);
+    *str = new_str;
     
+    if (flags.width > 0){
+        handle_flag_width(str, flags);
+    }
+
+	// printf("string2:[%s]\n", *str);
 }
 
 static int handle_pointer_width(char *full_str, t_flags flags)
@@ -185,7 +190,7 @@ int handle_number_conversion(va_list ap, int c, t_flags flags)
                 prefix = " ";
         }
     }
-    handle_num_flags(&str, prefix, flags);
+    handle_num_flags(&str, flags);
     count = ft_putstr(prefix) + ft_putstr(str);
     free(str);
     return (count);

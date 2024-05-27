@@ -140,3 +140,41 @@ char *ft_strchr(const char *s, int c)
     }
     return NULL;
 }
+
+
+char *ft_concat(const char *str1, const char *str2, int at_beginning)
+{
+    size_t len1 = 0, len2 = 0;
+    while (str1[len1] != '\0') len1++;
+    while (str2[len2] != '\0') len2++;
+
+    // Allocate memory for concatenated string
+    char *result = (char *)malloc((len1 + len2 + 1) * sizeof(char));
+    if (result == NULL) {
+        // fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+
+    // Concatenate strings
+    if (at_beginning) {
+        // Copy str2 followed by str1
+        for (size_t i = 0; i < len2; i++) {
+            result[i] = str2[i];
+        }
+        for (size_t i = 0; i < len1; i++) {
+            result[i + len2] = str1[i];
+        }
+        result[len1 + len2] = '\0'; // Null-terminate the string
+    } else {
+        // Copy str1 followed by str2
+        for (size_t i = 0; i < len1; i++) {
+            result[i] = str1[i];
+        }
+        for (size_t i = 0; i < len2; i++) {
+            result[i + len1] = str2[i];
+        }
+        result[len1 + len2] = '\0'; // Null-terminate the string
+    }
+
+    return result;
+}

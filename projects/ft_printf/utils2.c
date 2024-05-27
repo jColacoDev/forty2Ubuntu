@@ -34,12 +34,11 @@ static void	handle_flag_width_aux(char **str, char pad_char, int len,
 		*str = ft_strpad(*str, pad_char, flags.width - len, 0);
 }
 
-void	handle_flag_width(char **str, char *prefix, t_flags flags)
+void	handle_flag_width(char **str, t_flags flags)
 {
 	char	pad_char;
 	int		len;
 
-	ft_strjoin((const char *)(prefix), (const char *)(*str));
 	len = ft_strlen(*str);
 	pad_char = ' ';
 	if (flags.zero && !flags.minus && !flags.dot)
@@ -48,7 +47,7 @@ void	handle_flag_width(char **str, char *prefix, t_flags flags)
 		handle_flag_width_aux(str, pad_char, len, flags);
 }
 
-void	handle_num_flags(char **str, char *prefix, t_flags flags)
+void	handle_num_flags(char **str, t_flags flags)
 {
 	int	len;
 
@@ -66,8 +65,14 @@ void	handle_num_flags(char **str, char *prefix, t_flags flags)
 				*str = ft_strpad(*str, '0', flags.precision - len, 0);
 		}
 	}
-
 	if (flags.width > 0)
-		handle_flag_width(str, prefix, flags);
-
+		handle_flag_width(str, flags);
 }
+
+// int main(){
+
+// 	printf("%#.X\n", 0xee);
+// 	ft_printf("%#.X\n", 0xee);
+
+// 	return 0;
+// }

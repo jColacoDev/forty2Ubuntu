@@ -47,11 +47,12 @@ unsigned long ft_strtoul_base(const char *str, const char *base);
 int ft_isspace(int c);
 int ft_atoi_base(const char *str, const char *base);
 char *ft_strchr(const char *s, int c);
+char *ft_concat(const char *str1, const char *str2, int at_beginning);
 
 int		handle_number_conversion(va_list ap, int s, t_flags flags);
 int		handle_special_cases(va_list ap, int s, t_flags flags);
-void	handle_flag_width(char **str, char *prefix, t_flags flags);
-void	handle_num_flags(char **str, char *prefix, t_flags flags);
+void	handle_flag_width(char **str, t_flags flags);
+void	handle_num_flags(char **str, t_flags flags);
 char	*ft_strfill(char c, int width);
 
 #endif

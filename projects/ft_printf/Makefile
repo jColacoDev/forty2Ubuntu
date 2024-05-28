@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/08 15:12:37 by joao-rde          #+#    #+#              #
-#    Updated: 2024/05/24 20:00:40 by joao-rde         ###   ########.fr        #
+#    Updated: 2024/05/28 02:36:00 by joao-rde         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 CC = gcc
 CFLAGS= -Wall -Wextra -Werror
-SOURCES = ft_printf.c libft.c libft2.c libft3.c utils.c utils2.c utils3.c
+SOURCES = ft_printf.c libft.c libft2.c libft3.c libft4.c libft5.c utils.c utils1.c utils2.c utils3.c
 OBJECTS	= $(SOURCES:.c=.o)
 
 all: $(NAME)

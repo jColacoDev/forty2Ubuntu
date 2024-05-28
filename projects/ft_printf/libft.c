@@ -6,7 +6,7 @@
 /*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 16:32:51 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/27 23:22:46 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/05/28 00:25:55 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,17 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-int	ft_atoi(const char *str)
+char	*ft_strchr(const char *s, int c)
 {
-	int	result;
-	int	sign;
-
-	result = 0;
-	sign = 1;
-	while (*str == ' ' || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '-' || *str == '+')
+	while (*s != '\0')
 	{
-		if (*str == '-')
-			sign = -1;
-		str++;
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
 	}
-	while (*str >= '0' && *str <= '9')
-	{
-		result = result * 10 + (*str - '0');
-		str++;
-	}
-	return (result * sign);
+	if (c == '\0')
+		return ((char *)s);
+	return (NULL);
 }
 
 char	*ft_strpad(char *str, char pad, int len, int left_align)

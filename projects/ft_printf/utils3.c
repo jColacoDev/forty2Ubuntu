@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:02:43 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/24 20:49:36 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/05/28 02:28:07 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+static void	handle_string_precision(char **str, t_flags flags)
+{
+	if (!*str && flags.precision < 6)
+		*str = ft_strfill(' ', flags.precision);
+	else if ((size_t)flags.precision < ft_strlen(*str))
+		*str = ft_substr(*str, 0, flags.precision);
+	else
+		*str = ft_strdup(*str);
+}
 
 static int	handle_string(va_list ap, t_flags flags)
 {
@@ -20,30 +30,15 @@ static int	handle_string(va_list ap, t_flags flags)
 	str = va_arg(ap, char *);
 	if (!str)
 	{
-		if(flags.precision > 0 && flags.precision < 6)
+		if (flags.precision > 0 && flags.precision < 6)
 			str = "";
 		else
 			str = "(null)";
 	}
 	if (flags.dot && flags.precision >= 0)
-	{
-		if (!str && flags.precision < 6)
-		{
-			str = ft_strfill(' ', flags.precision);
-		}
-		else if ((size_t)flags.precision < ft_strlen(str))
-		{
-			str = ft_substr(str, 0, flags.precision);
-		}
-		else
-		{
-			str = ft_strdup(str);
-		}
-	}
+		handle_string_precision(&str, flags);
 	else
-	{
 		str = ft_strdup(str);
-	}
 	handle_flag_width(&str, flags);
 	count = ft_putstr(str);
 	free(str);
@@ -70,7 +65,7 @@ static void	handle_char_minus(char *temp, int next_arg, t_flags flags)
 	}
 }
 
-int	handle_char(va_list ap, t_flags flags)
+static int	handle_char(va_list ap, t_flags flags)
 {
 	int		next_arg;
 	int		size;

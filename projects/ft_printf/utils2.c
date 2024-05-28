@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
+/*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 16:38:29 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 02:24:19 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:21:14 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	handle_zero_precision(char **str, unsigned long value, t_flags flags)
+{
+	char	*temp;
+
+	if (flags.dot && flags.precision == 0 && value == 0)
+	{
+		temp = ft_strdup("");
+		if (!temp)
+			return ;
+		free(*str);
+		*str = temp;
+	}
+}
 
 static void	check_if_hex(char *str, int *is_hex)
 {

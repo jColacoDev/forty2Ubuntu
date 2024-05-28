@@ -6,49 +6,46 @@
 /*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:08:31 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 17:54:25 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:21:12 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	handle_zero_precision(char **str, unsigned long value, t_flags flags)
-{
-	char	*temp;
-
-	if (flags.dot && flags.precision == 0 && value == 0)
-	{
-		temp = ft_strdup("");
-		if (!temp)
-			return;
-		free(*str);
-		*str = temp;
-	}
-}
-
-static void	handle_num_flags(char **str, t_flags flags)
+static char	*handle_num_flags(char *str, t_flags flags)
 {
 	int		len;
 	char	*temp;
+	char	*temp_str;
+	char	*padded_str;
 
+	temp = NULL;
 	if (flags.dot && flags.precision >= 0)
 	{
-		len = ft_strlen(*str);
-		if ((*str)[0] == '-')
+		len = ft_strlen(str);
+		if (str[0] == '-')
 			len--;
 		if (len < flags.precision)
 		{
-			if ((*str)[0] == '-')
-				temp = ft_strjoin("-", ft_strpad(ft_strdup(*str + 1), '0',
-							flags.precision - len, 0));
+			if (str[0] == '-')
+			{
+				temp_str = ft_strdup(str + 1);
+				padded_str = ft_strpad(temp_str, '0', flags.precision - len, 0);
+				temp = ft_strjoin("-", padded_str);
+				free(padded_str);
+			}
 			else
-				temp = ft_strpad(*str, '0', flags.precision - len, 0);
+				temp = ft_strpad(str, '0', flags.precision - len, 0);
 		}
 	}
-	free(*str);
-	*str = temp;
+	if (temp)
+	{
+		free(str);
+		str = temp;
+	}
 	if (flags.width > 0)
-		handle_flag_width(str, flags);
+		handle_flag_width(&str, flags);
+	return (str);
 }
 
 static int	handle_hex_and_pointer(va_list ap, int c, t_flags flags)
@@ -73,21 +70,18 @@ static int	handle_hex_and_pointer(va_list ap, int c, t_flags flags)
 	return (count);
 }
 
-static char	*handle_signed_int(va_list ap, t_flags flags,
-		char **prefix)
+static char	*handle_signed_int(va_list ap, t_flags flags, char **prefix)
 {
-	int		num;
+	int	num;
 
 	num = va_arg(ap, int);
 	if (num == 0 && flags.dot && flags.precision == 0)
 		return (ft_strdup(""));
-
 	if (flags.plus && num >= 0)
 		*prefix = "+";
 	else if (flags.space && num >= 0)
 		*prefix = " ";
-
-	return(ft_itoa(num, flags));
+	return (ft_itoa(num, flags));
 }
 
 int	handle_number_conversion(va_list ap, int c, t_flags flags)
@@ -107,8 +101,7 @@ int	handle_number_conversion(va_list ap, int c, t_flags flags)
 	}
 	else if (c == 'd' || c == 'i')
 		str = handle_signed_int(ap, flags, &prefix);
-
-	handle_num_flags(&str, flags);
+	str = handle_num_flags(str, flags);
 	count = ft_putstr(prefix) + ft_putstr(str);
 	free(str);
 	return (count);
@@ -116,7 +109,7 @@ int	handle_number_conversion(va_list ap, int c, t_flags flags)
 
 int	main(void)
 {
-	printf("ft_printf:%-15.15i\n", (int)-2147483648);
+	// printf("ft_printf:%-15.15i\n", (int)-2147483648);
 	ft_printf("___printf:%-15.15i\n", (int)-2147483648);
 	return (0);
 }

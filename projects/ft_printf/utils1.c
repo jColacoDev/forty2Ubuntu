@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
+/*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:08:31 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 04:27:38 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:54:25 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_zero_precision(char **str, unsigned long value, t_flags flags)
 	{
 		temp = ft_strdup("");
 		if (!temp)
-			return ;
+			return;
 		free(*str);
 		*str = temp;
 	}
@@ -28,7 +28,8 @@ void	handle_zero_precision(char **str, unsigned long value, t_flags flags)
 
 static void	handle_num_flags(char **str, t_flags flags)
 {
-	int	len;
+	int		len;
+	char	*temp;
 
 	if (flags.dot && flags.precision >= 0)
 	{
@@ -38,12 +39,14 @@ static void	handle_num_flags(char **str, t_flags flags)
 		if (len < flags.precision)
 		{
 			if ((*str)[0] == '-')
-				*str = ft_strjoin("-", ft_strpad(ft_strdup(*str + 1), '0',
+				temp = ft_strjoin("-", ft_strpad(ft_strdup(*str + 1), '0',
 							flags.precision - len, 0));
 			else
-				*str = ft_strpad(*str, '0', flags.precision - len, 0);
+				temp = ft_strpad(*str, '0', flags.precision - len, 0);
 		}
 	}
+	free(*str);
+	*str = temp;
 	if (flags.width > 0)
 		handle_flag_width(str, flags);
 }
@@ -70,22 +73,21 @@ static int	handle_hex_and_pointer(va_list ap, int c, t_flags flags)
 	return (count);
 }
 
-static void	handle_signed_int(va_list ap, t_flags flags, char **str,
+static char	*handle_signed_int(va_list ap, t_flags flags,
 		char **prefix)
 {
-	int	num;
+	int		num;
 
 	num = va_arg(ap, int);
 	if (num == 0 && flags.dot && flags.precision == 0)
-		*str = ft_strdup("");
-	else
-	{
-		*str = ft_itoa(num, flags);
-		if (flags.plus && num >= 0)
-			*prefix = "+";
-		else if (flags.space && num >= 0)
-			*prefix = " ";
-	}
+		return (ft_strdup(""));
+
+	if (flags.plus && num >= 0)
+		*prefix = "+";
+	else if (flags.space && num >= 0)
+		*prefix = " ";
+
+	return(ft_itoa(num, flags));
 }
 
 int	handle_number_conversion(va_list ap, int c, t_flags flags)
@@ -104,7 +106,8 @@ int	handle_number_conversion(va_list ap, int c, t_flags flags)
 		handle_zero_precision(&str, ft_atoi(str), flags);
 	}
 	else if (c == 'd' || c == 'i')
-		handle_signed_int(ap, flags, &str, &prefix);
+		str = handle_signed_int(ap, flags, &prefix);
+
 	handle_num_flags(&str, flags);
 	count = ft_putstr(prefix) + ft_putstr(str);
 	free(str);

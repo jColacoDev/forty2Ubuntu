@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
+/*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:08:31 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 02:25:47 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:53:28 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,23 @@ int	handle_pointer(va_list ap, t_flags flags)
 static void	handle_flag_width_aux(char **str, char pad_char, int len,
 		t_flags flags)
 {
-	char	*new_str;
+	char	*temp;
 
 	if (flags.minus)
 		*str = ft_strpad(*str, pad_char, flags.width - len, 1);
 	else if (pad_char == '0' && **str == '-')
 	{
-		new_str = malloc(flags.width + 1);
-		if (!new_str)
+		temp = malloc(flags.width + 1);
+		if (!temp)
 			return ;
-		new_str[0] = '-';
-		ft_memset(new_str + 1, '0', flags.width - len);
-		ft_strcpy(new_str + flags.width - len + 1, *str + 1);
-		free(*str);
-		*str = new_str;
+		temp[0] = '-';
+		ft_memset(temp + 1, '0', flags.width - len);
+		ft_strcpy(temp + flags.width - len + 1, *str + 1);
 	}
 	else
-		*str = ft_strpad(*str, pad_char, flags.width - len, 0);
+		temp = ft_strpad(*str, pad_char, flags.width - len, 0);
+	free(*str);
+	*str = temp;
 }
 
 void	handle_flag_width(char **str, t_flags flags)

@@ -6,19 +6,23 @@
 /*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:08:31 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 02:37:47 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/05/28 04:27:38 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	handle_zero_precision(char **str, unsigned long value,
-		t_flags flags)
+void	handle_zero_precision(char **str, unsigned long value, t_flags flags)
 {
+	char	*temp;
+
 	if (flags.dot && flags.precision == 0 && value == 0)
 	{
+		temp = ft_strdup("");
+		if (!temp)
+			return ;
 		free(*str);
-		*str = ft_strdup("");
+		*str = temp;
 	}
 }
 
@@ -105,4 +109,11 @@ int	handle_number_conversion(va_list ap, int c, t_flags flags)
 	count = ft_putstr(prefix) + ft_putstr(str);
 	free(str);
 	return (count);
+}
+
+int	main(void)
+{
+	printf("ft_printf:%-15.15i\n", (int)-2147483648);
+	ft_printf("___printf:%-15.15i\n", (int)-2147483648);
+	return (0);
 }

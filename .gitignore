@@ -1,3 +1,5 @@
 *.o
 *.out
 *.a
+DESKTOP*
+ft_printf_tester

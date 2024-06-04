@@ -6,7 +6,7 @@
 /*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:08:31 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 04:27:38 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/06/05 00:01:06 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	handle_zero_precision(char **str, unsigned long value, t_flags flags)
 static void	handle_num_flags(char **str, t_flags flags)
 {
 	int	len;
+	char *str_aux;
 
 	if (flags.dot && flags.precision >= 0)
 	{
@@ -38,11 +39,13 @@ static void	handle_num_flags(char **str, t_flags flags)
 		if (len < flags.precision)
 		{
 			if ((*str)[0] == '-')
-				*str = ft_strjoin("-", ft_strpad(ft_strdup(*str + 1), '0',
+				str_aux = ft_strjoin("-", ft_strpad(ft_strdup(*str + 1), '0',
 							flags.precision - len, 0));
 			else
-				*str = ft_strpad(*str, '0', flags.precision - len, 0);
+				str_aux = ft_strpad(*str, '0', flags.precision - len, 0);
 		}
+		free(*str);
+		*str = str_aux;
 	}
 	if (flags.width > 0)
 		handle_flag_width(str, flags);
@@ -109,11 +112,4 @@ int	handle_number_conversion(va_list ap, int c, t_flags flags)
 	count = ft_putstr(prefix) + ft_putstr(str);
 	free(str);
 	return (count);
-}
-
-int	main(void)
-{
-	printf("ft_printf:%-15.15i\n", (int)-2147483648);
-	ft_printf("___printf:%-15.15i\n", (int)-2147483648);
-	return (0);
 }

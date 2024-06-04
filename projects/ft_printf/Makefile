@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+         #
+#    By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/08 15:12:37 by joao-rde          #+#    #+#              #
-#    Updated: 2024/05/28 02:36:00 by joao-rde         ###   ########.fr        #
+#    Updated: 2024/06/04 19:30:46 by joao-rde         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,7 @@ $(NAME): $(OBJECTS)
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: $(OBJECTS)
-	$(CC) $(CFLAGS) -c $< -o $@
+bonus: $(NAME)
 	touch bonus
 
 clean:

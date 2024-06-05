@@ -6,7 +6,7 @@
 /*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:09:57 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 02:33:57 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/06/05 02:23:50 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char			*ft_strchr(const char *s, int c);
 char			*ft_strcat(char *dest, const char *src, size_t start);
 char			*ft_strfill(char c, int width);
 void			*ft_memset(void *s, int c, size_t n);
+int				ft_strcmp(const char *s1, const char *s2);
 
 int				handle_number_conversion(va_list ap, int c, t_flags flags);
 int				handle_pointer(va_list ap, t_flags flags);

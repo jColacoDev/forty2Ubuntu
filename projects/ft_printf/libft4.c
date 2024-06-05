@@ -6,7 +6,7 @@
 /*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 17:29:00 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 02:30:39 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/06/05 02:24:18 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,14 @@ int	ft_get_sign(const char **str)
 		(*str)++;
 	}
 	return (sign);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

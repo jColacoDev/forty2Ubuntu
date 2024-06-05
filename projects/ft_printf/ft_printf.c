@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
+/*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 17:48:11 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 02:34:04 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:27:14 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	ft_printf(const char *format, ...)
 
 	count = 0;
 	va_start(ap, format);
+	if (!format || !*format)
+		return (-1);
 	while (*format)
 	{
 		if (*format == '%')

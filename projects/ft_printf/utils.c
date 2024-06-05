@@ -6,7 +6,7 @@
 /*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:08:31 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/05/28 02:25:47 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/06/05 00:52:02 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	handle_flag_width_aux(char **str, char pad_char, int len,
 	char	*new_str;
 
 	if (flags.minus)
-		*str = ft_strpad(*str, pad_char, flags.width - len, 1);
+		new_str = ft_strpad(*str, pad_char, flags.width - len, 1);
 	else if (pad_char == '0' && **str == '-')
 	{
 		new_str = malloc(flags.width + 1);
@@ -82,10 +82,10 @@ static void	handle_flag_width_aux(char **str, char pad_char, int len,
 		ft_memset(new_str + 1, '0', flags.width - len);
 		ft_strcpy(new_str + flags.width - len + 1, *str + 1);
 		free(*str);
-		*str = new_str;
 	}
 	else
-		*str = ft_strpad(*str, pad_char, flags.width - len, 0);
+		new_str = ft_strpad(*str, pad_char, flags.width - len, 0);
+	*str = new_str;
 }
 
 void	handle_flag_width(char **str, t_flags flags)

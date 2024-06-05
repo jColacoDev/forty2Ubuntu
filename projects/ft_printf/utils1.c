@@ -6,7 +6,7 @@
 /*   By: joao-rde <joao-rde@student.42.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 17:08:31 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/06/05 00:08:25 by joao-rde         ###   ########.fr       */
+/*   Updated: 2024/06/05 01:00:08 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	handle_zero_precision(char **str, unsigned long value, t_flags flags)
 
 static void	handle_num_flags(char **str, t_flags flags)
 {
-	int	len;
-	char *str_aux;
-	char *str_aux2;
+	int		len;
+	char	*str_aux;
+	char	*str_aux2;
 
 	if (flags.dot && flags.precision >= 0)
 	{
@@ -41,16 +41,17 @@ static void	handle_num_flags(char **str, t_flags flags)
 		{
 			if ((*str)[0] == '-')
 			{
-				str_aux2 = ft_strpad(ft_strdup(*str + 1), '0',
-							flags.precision - len, 0);
+				str_aux = ft_strdup(*str + 1);
+				str_aux2 = ft_strpad(str_aux, '0', flags.precision
+						- len, 0);
 				str_aux = ft_strjoin("-", str_aux2);
 				free(str_aux2);
+				free(*str);
 			}
 			else
 				str_aux = ft_strpad(*str, '0', flags.precision - len, 0);
+			*str = str_aux;
 		}
-		free(*str);
-		*str = str_aux;
 	}
 	if (flags.width > 0)
 		handle_flag_width(str, flags);
@@ -114,7 +115,8 @@ int	handle_number_conversion(va_list ap, int c, t_flags flags)
 	else if (c == 'd' || c == 'i')
 		handle_signed_int(ap, flags, &str, &prefix);
 	handle_num_flags(&str, flags);
-	count = ft_putstr(prefix) + ft_putstr(str);
+	count = ft_putstr(prefix);
+	count += ft_putstr(str);
 	free(str);
 	return (count);
 }

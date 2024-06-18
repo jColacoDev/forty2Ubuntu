@@ -5,34 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 19:41:47 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/06/17 16:27:58 by joao-rde         ###   ########.fr       */
+/*   Created: 2024/06/18 18:11:04 by joao-rde          #+#    #+#             */
+/*   Updated: 2024/06/18 18:11:07 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# include <fcntl.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 8192
+#  define BUFFER_SIZE 4096
 # endif
 
-# define FD_MAX 10240
-
-/*
-** @brief Get the next line of a file descriptor WITH the newline.
-**
-** @param fd file descriptor of file to read
-** @return char* line that's been read, or NULL if EOF or error
-*/
+size_t	ft_strlen(char *s);
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin(char *left_str, char *buff);
+char	*ft_line(char *str);
+char	*ft_next_str(char *str);
+char	*ft_read(int fd, char *str);
 char	*get_next_line(int fd);
-
-size_t	ft_strlen(const char *s);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strdup(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

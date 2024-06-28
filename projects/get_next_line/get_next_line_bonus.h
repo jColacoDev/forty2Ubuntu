@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/18 18:10:40 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/06/18 18:10:42 by joao-rde         ###   ########.fr       */
+/*   Created: 2024/05/15 19:46:32 by joao-rde          #+#    #+#             */
+/*   Updated: 2024/06/20 15:34:42 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,17 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+//#  define BUFFER_SIZE 8192
+#  define BUFFER_SIZE 1
 # endif
 
-size_t	ft_strlen(char *s);
-char	*ft_strchr(char *s, int c);
-char	*ft_strjoin(char *left_str, char *buff);
-char	*ft_line(char *str);
-char	*ft_next_str(char *str);
-char	*ft_read(int fd, char *str);
+# define FD_MAX 10240
+
 char	*get_next_line(int fd);
+
+size_t	ft_strlen(const char *s);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+char	*ft_strdup(const char *s);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif

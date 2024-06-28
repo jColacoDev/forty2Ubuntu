@@ -5,73 +5,99 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: joao-rde <joao-rde@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/18 18:10:59 by joao-rde          #+#    #+#             */
-/*   Updated: 2024/06/18 18:11:01 by joao-rde         ###   ########.fr       */
+/*   Created: 2024/05/15 19:41:37 by joao-rde          #+#    #+#             */
+/*   Updated: 2024/06/21 19:21:25 by joao-rde         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_read(int fd, char *str)
+static size_t	get_len_of_line(char *buffer)
 {
-	char	*buff;
-	int		bytes;
+	size_t	len;
 
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (NULL);
-	bytes = 1;
-	while (!ft_strchr(str, '\n') && bytes != 0)
+	len = 0;
+	while (buffer[len] != '\n' && buffer[len] != '\0')
+		len++;
+	if (buffer[len] == '\n')
+		len++;
+	return (len);
+}
+
+static ssize_t	get_read(int fd, char *buffer)
+{
+	ssize_t	read_length;
+
+	read_length = read(fd, buffer, BUFFER_SIZE);
+	if (read_length > 0)
+		buffer[read_length] = 0;
+	else
+		buffer[0] = 0;
+	return (read_length);
+}
+
+static int	get_line_aux(char *buffer, int fd)
+{
+	ssize_t	read_length;
+
+	if (ft_strlen(buffer) == 0)
 	{
-		bytes = read(fd, buff, BUFFER_SIZE);
-		if (bytes == -1)
-		{
-			free(buff);
-			return (NULL);
-		}
-		buff[bytes] = '\0';
-		str = ft_strjoin(str, buff);
+		read_length = get_read(fd, buffer);
+		if (read_length <= 0)
+			return (0);
 	}
-	free(buff);
-	return (str);
+	return (-1);
+}
+
+static char	*get_line(char *buffer, int fd, int *nl_flag)
+{
+	size_t	line_length;
+	char	*line;
+	char	*buff_aux;
+
+	if (!get_line_aux(buffer, fd))
+		return (NULL);
+	line_length = get_len_of_line(buffer);
+	if (buffer[line_length - 1] == '\n')
+		*nl_flag = 1;
+	line = malloc(line_length + 1);
+	if (line == NULL)
+		return (NULL);
+	ft_strlcpy(line, buffer, line_length + 1);
+	buff_aux = ft_strdup((buffer) + line_length);
+	if (buff_aux == NULL)
+	{
+		free(line);
+		return (NULL);
+	}
+	ft_strlcpy(buffer, buff_aux, ft_strlen(buff_aux) + 1);
+	free(buff_aux);
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*line;
-	static char	*str;
+	static char	buffer[BUFFER_SIZE + 1];
+	int			nl_flag;
+	char		*current_line;
+	char		*new_line;
+	char		*previous_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	str = ft_read(fd, str);
-	if (!str)
+	if (fd < 0)
 		return (NULL);
-	line = ft_line(str);
-	str = ft_next_str(str);
-	return (line);
+	nl_flag = 0;
+	current_line = get_line(buffer, fd, &nl_flag);
+	if (current_line == NULL)
+		return (NULL);
+	while (nl_flag == 0)
+	{
+		new_line = get_line(buffer, fd, &nl_flag);
+		if (new_line == NULL)
+			return (current_line);
+		previous_line = current_line;
+		current_line = ft_strjoin(current_line, new_line);
+		free(new_line);
+		free(previous_line);
+	}
+	return (current_line);
 }
-
-/*
-int	main(void)
-{
-	int		fd;
-	char	*tab;
-
-	printf("\nBUFFER_SIZE: %d\n \n", BUFFER_SIZE);
-	fd = open("mix1.txt", O_RDONLY);
-	tab = get_next_line(fd);
-	printf("%s", tab);
-	free(tab);
-	printf("Another\n");
-	tab = get_next_line(fd);
-	printf("%s", tab);
-	printf("Another\n");
-	tab = get_next_line(fd);
-	printf("%s", tab);
-	printf("Another\n");
-	tab = get_next_line(fd);
-	printf("%s", tab);
-	close(fd);
-	return (0);
-}
-*/
